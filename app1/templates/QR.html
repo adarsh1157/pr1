@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator with History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .history {
+            margin-top: 20px;
+        }
+        .history h2 {
+            color: #333;
+        }
+        .qr-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .qr-item img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>QR Code Generator</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="data" placeholder="Enter text to generate QR code" required>
+            <button type="submit">Download QR Code</button>
+        </form>
+
+        <div class="history">
+            <h2>QR Code History</h2>
+            {% for item in qr_history %}
+                <div class="qr-item">
+                    <img src="data:image/png;base64,{{ item.qr_image }}" alt="QR Code">
+                    <p>{{ item.data }}</p>
+                </div>
+            {% empty %}
+                <p>No QR codes generated yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
