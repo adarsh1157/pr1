@@ -1,6 +1,6 @@
 from django.urls import path
-from . import views
+from .views import generate_qr
 
 urlpatterns = [
-    path('', views.generate_qr_code, name='generate_qr_code'),
+    path('', generate_qr, name='generate_qr'),
 ]
