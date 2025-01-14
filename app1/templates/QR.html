@@ -1,88 +1,91 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator with History</title>
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
+            background-color: #a4caf0;
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            height: 100vh;
-            margin: 0;
-            padding: 20px;
         }
         .container {
-            background-color: #fff;
-            padding: 20px;
+            background: white;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 400px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
-        input[type="text"] {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+        h1 {
+            color: #007bff;
         }
-        button {
+        .btn-primary {
             background-color: #007bff;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-color: #007bff;
         }
-        button:hover {
+        .btn-primary:hover {
             background-color: #0056b3;
+            border-color: #0056b3;
         }
-        .history {
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+        footer {
             margin-top: 20px;
-        }
-        .history h2 {
-            color: #333;
-        }
-        .qr-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        .qr-item img {
-            width: 80px;
-            height: 80px;
-            margin-right: 10px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
+            font-size: 0.9em;
+            text-align: center;
+            color: #6c757d;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>QR Code Generator</h1>
-        <form method="POST">
+    <div class="container mt-5">
+        <h1 class="text-center">QR Code Generator</h1>
+        <form method="post" class="mt-4">
             {% csrf_token %}
-            <input type="text" name="data" placeholder="Enter text to generate QR code" required>
-            <button type="submit">Download QR Code</button>
+            <div class="form-group">
+                <label for="qr_data">Enter URL or Text:</label>
+                <input type="text" id="qr_data" name="qr_data" class="form-control" required>
+                <small class="form-text text-muted">Please enter a valid URL or text.</small>
+            </div>
+            <center><button type="submit" class="btn btn-primary">Generate QR Code</button></center>
         </form>
 
-        <div class="history">
-            <h2>QR Code History</h2>
-            {% for item in qr_history %}
-                <div class="qr-item">
-                    <img src="data:image/png;base64,{{ item.qr_image }}" alt="QR Code">
-                    <p>{{ item.data }}</p>
-                </div>
-            {% empty %}
-                <p>No QR codes generated yet.</p>
-            {% endfor %}
-        </div>
+        {% if qr_code_image %}
+            <div class="text-center mt-4">
+                <h2>Your QR Code:</h2>
+                <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code" class="img-fluid" /><br>
+                <p class="mt-2">Link: <a href="{{ qr_data }}" target="_blank">{{ qr_data }}</a></p>
+                <a href="data:image/png;base64,{{ qr_code_image }}" download="qr_code.png" class="btn btn-success mt-2">
+                    Download QR Code
+                </a>
+            </div>
+        {% endif %}
+
+        <footer>
+            &copy; {{ current_year }} Raghavendra Borse. All rights reserved.<br>
+            Linkedin URL:https://in.linkedin.com/in/raghavendra-borse-37322416b
+        </footer>
     </div>
+
+    <script>
+        // Optional: You can add interactivity here (e.g., form validation)
+        $('form').on('submit', function() {
+            const qrData = $('#qr_data').val().trim();
+            if (!qrData) {
+                alert('Please enter a valid URL or text.');
+                return false; // Prevent form submission
+            }
+        });
+    </script>
 </body>
 </html>
