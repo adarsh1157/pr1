@@ -122,14 +122,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # or 'django.db.backends.mysql'
-        'NAME': 'your_database_name',
-        'USER': 'your_database_user',
-        'PASSWORD': 'your_database_password',
-        'HOST': 'your_database_host',  # e.g., 'localhost' or database URL
-        'PORT': 'your_database_port',  # e.g., '5432' for PostgreSQL
-    }
-}
+
 
